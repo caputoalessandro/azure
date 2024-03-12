@@ -18,6 +18,6 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
     records = [(r.product_name,r.price) for r in result]
 
     return func.HttpResponse(
-        body=json.dumps(obj=records, indent=4)
+        body=json.dumps(obj=records, indent=4),
         status_code = 200
     )

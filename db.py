@@ -7,34 +7,40 @@ def main():
     cnxn = connect()
     crsr = cnxn.cursor()
     
-    # crsr.execute('''
-    # 		CREATE TABLE products (
-    # 			product_id int primary key,
-    # 			product_name nvarchar(50),
-    # 			price int
-    # 			)
-    #                ''')
-    #
-    # #define and execute an insert Query
-    # insert_sql = "INSERT INTO [products] (product_id,product_name,price) VALUES (?,?,?)"
-    #
-    # #define my records
-    # records = [
-    #     ("12", "A", "400"),
-    #     ("58", "B", "700")
-    # ]
-    #
-    # #define data types
-    # crsr.setinputsizes(
-    #     [
-    #         (pyodbc.SQL_WVARCHAR, 50, 0),
-    #         (pyodbc.SQL_WVARCHAR, 50, 0),
-    #         (pyodbc.SQL_INTEGER, 50, 0)
-    #     ]
-    # )
-    #
-    # #execute the insert statement
-    # crsr.executemany(insert_sql, records)
+    try:
+        # create db
+        crsr.execute('''
+                CREATE TABLE products (
+                    product_id int primary key,
+                    product_name nvarchar(50),
+                    price int
+                    )
+                    ''')
+        
+        #define and execute an insert Query
+        insert_sql = "INSERT INTO [products] (product_id,product_name,price) VALUES (?,?,?)"
+
+        #define my records
+        records = [
+            ("12", "A", "400"),
+            ("58", "B", "700")
+        ]
+
+        #define data types
+        crsr.setinputsizes(
+            [
+                (pyodbc.SQL_WVARCHAR, 50, 0),
+                (pyodbc.SQL_WVARCHAR, 50, 0),
+                (pyodbc.SQL_INTEGER, 50, 0)
+            ]
+        )
+
+        #execute the insert statement
+        crsr.executemany(insert_sql, records)
+        crsr.commit()
+
+    except:
+        print("DB ALREADY EXIST")
 
     # define and execute a select query
     select_sql = "SELECT * FROM [products]"
@@ -43,7 +49,6 @@ def main():
     for r in result:
         print(f"product name: {r.product_name}, price: {r.price} euro")
 
-    crsr.commit()
     cnxn.close()
 
 
